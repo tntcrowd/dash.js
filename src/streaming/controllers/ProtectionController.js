@@ -241,11 +241,12 @@ MediaPlayer.dependencies.ProtectionController = function () {
                 } else if (protData.laURL && protData.laURL !== "") { // TODO: Deprecated!
                     url = protData.laURL;
                 }
-            } else {
+            }
+            if (!url) {
                 url = this.keySystem.getLicenseServerURLFromInitData(MediaPlayer.dependencies.protection.CommonEncryption.getPSSHData(sessionToken.initData));
-                if (!url) {
-                    url = e.data.laURL;
-                }
+            }
+            if (!url) {
+                url = e.data.laURL;
             }
             // Possibly update or override the URL based on the message
             url = licenseServerData.getServerURLFromMessage(url, message, messageType);
@@ -284,9 +285,6 @@ MediaPlayer.dependencies.ProtectionController = function () {
                 var key;
                 if (headers) {
                     for (key in headers) {
-                        if ('authorization' === key.toLowerCase()) {
-                            xhr.withCredentials = true;
-                        }
                         xhr.setRequestHeader(key, headers[key]);
                     }
                 }
@@ -862,5 +860,3 @@ MediaPlayer.dependencies.ProtectionController.events = {
 MediaPlayer.dependencies.ProtectionController.prototype = {
     constructor: MediaPlayer.dependencies.ProtectionController
 };
-
-

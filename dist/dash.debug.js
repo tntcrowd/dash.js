@@ -8682,11 +8682,12 @@ MediaPlayer.dependencies.ProtectionController = function() {
             } else if (protData.laURL && protData.laURL !== "") {
                 url = protData.laURL;
             }
-        } else {
+        }
+        if (!url) {
             url = this.keySystem.getLicenseServerURLFromInitData(MediaPlayer.dependencies.protection.CommonEncryption.getPSSHData(sessionToken.initData));
-            if (!url) {
-                url = e.data.laURL;
-            }
+        }
+        if (!url) {
+            url = e.data.laURL;
         }
         url = licenseServerData.getServerURLFromMessage(url, message, messageType);
         if (!url) {
@@ -8713,9 +8714,6 @@ MediaPlayer.dependencies.ProtectionController = function() {
             var key;
             if (headers) {
                 for (key in headers) {
-                    if ("authorization" === key.toLowerCase()) {
-                        xhr.withCredentials = true;
-                    }
                     xhr.setRequestHeader(key, headers[key]);
                 }
             }
