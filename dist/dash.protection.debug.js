@@ -1854,12 +1854,14 @@ function ProtectionController(config) {
                 // TODO: Deprecated!
                 url = protData.laURL;
             }
-        } else {
-            url = keySystem.getLicenseServerURLFromInitData(_CommonEncryptionJs2['default'].getPSSHData(sessionToken.initData));
-            if (!url) {
-                url = e.data.laURL;
-            }
         }
+        if (!url) {
+            url = keySystem.getLicenseServerURLFromInitData(_CommonEncryptionJs2['default'].getPSSHData(sessionToken.initData));
+        }
+        if (!url) {
+            url = e.data.laURL;
+        }
+
         // Possibly update or override the URL based on the message
         url = licenseServerData.getServerURLFromMessage(url, message, messageType);
 
@@ -1891,9 +1893,6 @@ function ProtectionController(config) {
             var key;
             if (headers) {
                 for (key in headers) {
-                    if ('authorization' === key.toLowerCase()) {
-                        xhr.withCredentials = true;
-                    }
                     xhr.setRequestHeader(key, headers[key]);
                 }
             }
